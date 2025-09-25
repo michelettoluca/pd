@@ -5,25 +5,21 @@ import (
 	"fmt"
 )
 
-type Builder Error
+type builder Error
 
-type BuilderError interface {
+type builderError interface {
 	New(message string) error
 	Errorf(format string, args ...any) error
 	Wrap(err error) error
 	Wrapf(err error, format string, args ...any) error
 }
 
-type BuilderCode interface {
-	Code(code string) BuilderError
+type builderCode interface {
+	Code(code string) builderError
 }
 
-type BuilderStatus interface {
-	Status(status int) BuilderCode
-}
-
-func newBuilder() Builder {
-	return Builder{
+func newBuilder() builder {
+	return builder{
 		message:    messageUndefined,
 		status:     statusUndefined,
 		code:       codeUndefined,
@@ -31,19 +27,19 @@ func newBuilder() Builder {
 	}
 }
 
-func (b Builder) New(message string) error {
+func (b builder) New(message string) error {
 	b.message = message
 
 	return Error(b)
 }
 
-func (b Builder) Errorf(format string, args ...any) error {
+func (b builder) Errorf(format string, args ...any) error {
 	b.message = fmt.Sprintf(format, args...)
 
 	return Error(b)
 }
 
-func (b Builder) Wrap(err error) error {
+func (b builder) Wrap(err error) error {
 	if err == nil {
 		return nil
 	}
@@ -58,7 +54,7 @@ func (b Builder) Wrap(err error) error {
 	return Error(b)
 }
 
-func (b Builder) Wrapf(err error, format string, args ...any) error {
+func (b builder) Wrapf(err error, format string, args ...any) error {
 	if err == nil {
 		return nil
 	}
@@ -75,13 +71,13 @@ func (b Builder) Wrapf(err error, format string, args ...any) error {
 	return Error(b)
 }
 
-func (b Builder) Status(status int) BuilderCode {
+func (b builder) Status(status int) builderCode {
 	b.status = status
 
 	return b
 }
 
-func (b Builder) Code(code string) BuilderError {
+func (b builder) Code(code string) builderError {
 	b.code = code
 
 	return b

@@ -20,11 +20,11 @@ import (
 //	return newBuilder().Wrapf(err, format, args...)
 //}
 
-func Status(status int) BuilderCode {
+func Status(status int) builderCode {
 	return newBuilder().Status(status)
 }
 
-//func Code(code string) BuilderError {
+//func Code(code string) builderError {
 //	return newBuilder().Code(code)
 //}
 
