@@ -4,29 +4,29 @@ import (
 	"errors"
 )
 
-//func New(message string) error {
-//	return newBuilder().New(message)
-//}
+func New(message string) error {
+	return newBuilder().New(message)
+}
 
-//func Errorf(format string, args ...any) error {
-//	return newBuilder().Errorf(format, args...)
-//}
+func Errorf(format string, args ...any) error {
+	return newBuilder().Errorf(format, args...)
+}
 
-//func Wrap(err error) error {
-//	return newBuilder().Wrap(err)
-//}
-//
-//func Wrapf(err error, format string, args ...any) error {
-//	return newBuilder().Wrapf(err, format, args...)
-//}
+func Wrap(err error) error {
+	return newBuilder().Wrap(err)
+}
 
-func Status(status int) builderCode {
+func Wrapf(err error, format string, args ...any) error {
+	return newBuilder().Wrapf(err, format, args...)
+}
+
+func Status(status int) Builder {
 	return newBuilder().Status(status)
 }
 
-//func Code(code string) builderError {
-//	return newBuilder().Code(code)
-//}
+func Code(code string) Builder {
+	return newBuilder().Code(code)
+}
 
 func findDeepest(err Error) Error {
 	if err.err == nil {
