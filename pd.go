@@ -20,13 +20,17 @@ func Wrapf(err error, format string, args ...any) error {
 	return newBuilder().Wrapf(err, format, args...)
 }
 
-func Status(status int) Builder {
-	return newBuilder().Status(status)
+func Response(status int, code string) Builder {
+	return newBuilder().Response(status, code)
 }
 
-func Code(code string) Builder {
-	return newBuilder().Code(code)
-}
+//func Status(status int) Builder {
+//	return newBuilder().Status(status)
+//}
+
+//func Code(code string) Builder {
+//	return newBuilder().Code(code)
+//}
 
 func findDeepest(err Error) Error {
 	if err.err == nil {
@@ -41,7 +45,7 @@ func findDeepest(err Error) Error {
 	return err
 }
 
-func findClosestMatch(err Error, predicate func(err Error) bool) (*Error, bool) {
+func findFirstMatching(err Error, predicate func(err Error) bool) (*Error, bool) {
 	if predicate(err) {
 		return &err, true
 	}
@@ -52,7 +56,7 @@ func findClosestMatch(err Error, predicate func(err Error) bool) (*Error, bool) 
 
 	var pdErr Error
 	if ok := errors.As(err.err, &pdErr); ok {
-		return findClosestMatch(pdErr, predicate)
+		return findFirstMatching(pdErr, predicate)
 	}
 
 	return nil, false

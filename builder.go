@@ -60,13 +60,20 @@ func (b Builder) Wrapf(err error, format string, args ...any) error {
 	return Error(b)
 }
 
-func (b Builder) Status(status int) Builder {
+//func (b Builder) Status(status int) Builder {
+//	b.status = status
+//
+//	return b
+//}
+
+//func (b Builder) Code(code string) Builder {
+//	b.code = code
+//
+//	return b
+//}
+
+func (b Builder) Response(status int, code string) Builder {
 	b.status = status
-
-	return b
-}
-
-func (b Builder) Code(code string) Builder {
 	b.code = code
 
 	return b

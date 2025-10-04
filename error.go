@@ -31,27 +31,22 @@ func (pd Error) Error() string {
 }
 
 func (pd Error) Message() string {
-	if match, ok := findClosestMatch(pd, func(err Error) bool { return err.message != messageUndefined }); ok {
+	if match, ok := findFirstMatching(pd, func(err Error) bool { return err.message != messageUndefined }); ok {
 		return match.message
 	}
 
 	return FallbackMessage
 }
 
-func (pd Error) Status() int {
-	if match, ok := findClosestMatch(pd, func(err Error) bool { return err.status != statusUndefined }); ok {
-		return match.status
+func (pd Error) Response() (int, string) {
+	match, ok := findFirstMatching(pd, func(err Error) bool {
+		return err.status != statusUndefined && err.code != codeUndefined
+	})
+	if ok {
+		return match.status, match.code
 	}
 
-	return FallbackStatus
-}
-
-func (pd Error) Code() string {
-	if match, ok := findClosestMatch(pd, func(err Error) bool { return err.code != codeUndefined }); ok {
-		return match.code
-	}
-
-	return FallbackCode
+	return FallbackStatus, FallbackCode
 }
 
 func (pd Error) StackTrace() string {
